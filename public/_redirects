@@ -1,0 +1,4 @@
+# Single-page app fallback: every path is served index.html so client-side
+# routes (/employees/emp_1027, /submissions?week=…) survive a direct hit or a
+# refresh. Read by Cloudflare Pages and Netlify.
+/*    /index.html   200
