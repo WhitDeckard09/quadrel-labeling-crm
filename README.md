@@ -1,5 +1,7 @@
 # Quadrel Labeling — Weekly Work Log CRM
 
+**Live demo → https://whitdeckard09.github.io/quadrel-labeling-crm/**
+
 Internal tool for managers to review the weekly work logs submitted by Quadrel
 Labeling employees. One row per employee per week: hours, output, what they did,
 anything they flagged, and whether the submission arrived on time.

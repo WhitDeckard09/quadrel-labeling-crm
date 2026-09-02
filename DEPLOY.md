@@ -1,5 +1,9 @@
 # Deploying the demo
 
+**Currently live at https://whitdeckard09.github.io/quadrel-labeling-crm/** via GitHub Pages, published by
+`.github/workflows/deploy-pages.yml` on every push to `main`. Nothing to do to
+redeploy — push and the workflow rebuilds it.
+
 The app is a static bundle — no server, no database, no environment secrets.
 `npm run build` produces `dist/`, which is ~800 KB on disk and **218 KB
 gzipped** over the wire. Any static host will serve it.
@@ -21,7 +25,25 @@ common hosts:
 
 ---
 
-## Recommended: Cloudflare Pages (code stays on GitHub)
+## Current setup: GitHub Pages
+
+Enabled with **Settings → Pages → Source: GitHub Actions**. The workflow builds
+with `VITE_BASE=/quadrel-labeling-crm/` (Pages serves from a repo subpath) and
+copies `index.html` to `404.html`.
+
+That 404 copy is what makes deep links work: GitHub Pages returns `404.html` for
+any unknown path, the app boots from it, and React Router resolves the real
+route. `curl` will report a 404 status for `/employees`, but every browser
+renders the page correctly — verified.
+
+Two limits worth knowing:
+
+- **No access control.** GitHub Pages cannot be password-protected on any plan.
+  Anyone with the link can open it.
+- The URL contains `github.io` unless you attach a custom domain
+  (**Settings → Pages → Custom domain**, free, works on a free account).
+
+## Alternative: Cloudflare Pages (code stays on GitHub)
 
 Gives a URL with no platform name you objected to, redeploys on every push, and
 supports a free password gate.
@@ -53,21 +75,6 @@ is entirely yours (`quadrel.yourdomain.com`) and Cloudflare is invisible.
 
 ---
 
-## Alternative: GitHub Pages
-
-Two things to know before choosing this:
-
-- The URL will be `https://<user>.github.io/<repo>/` — "github" is in it unless
-  you attach a custom domain.
-- **There is no access control.** GitHub Pages cannot be password-protected, and
-  on a free account it only serves public repos. If the demo needs a gate, use
-  Cloudflare Pages.
-
-To enable: **Settings → Pages → Source: GitHub Actions**, then run the
-*Deploy to GitHub Pages* workflow (it runs automatically on push to `main`).
-
----
-
 ## Alternative: hosting you already have
 
 Build and upload:
@@ -85,6 +92,13 @@ VITE_BASE=/quadrel/ npm run build
 ```
 
 ---
+
+## Search engines
+
+`index.html` carries `noindex, nofollow` and `public/robots.txt` disallows
+crawling. That does not restrict access in any way — the link works for anyone
+you send it to — it just keeps a demo of invented employee records out of search
+results. Delete both if you want it indexed.
 
 ## Regenerating the data
 
